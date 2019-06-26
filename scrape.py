@@ -9,7 +9,12 @@ import time
 def get_url():
 	'''prompts user for url input and returns url as string'''
 
-	url = input('provide url: ')
+	url = input('provide valid cars.com url: ')
+
+	while 'cars.com' not in url:
+		print('must be a cars.com search result url')
+
+		url = input('provide valid cars.com url: ')
 
 	return url
 
@@ -116,4 +121,4 @@ def run_scraper():
 
 
 
-
+print(get_url())
