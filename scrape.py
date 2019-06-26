@@ -6,8 +6,14 @@ import csv
 import numpy as np 
 import time
 
+def get_url():
+	'''prompts user for url input and returns url as string'''
 
-base_url = 'https://www.cars.com/for-sale/searchresults.action/?dealerType=all&page=1&perPage=20&rd=99999&searchSource=SORT&sort=price-highest&zc=02038'
+	url = input('provide url: ')
+
+	return url
+
+
 
 def generate_html(url):
 	'''generates html as a string given the url to a website as input'''
@@ -23,7 +29,7 @@ def generate_html(url):
 
 def run_scraper():
 	'''scrapes cars.com url and writes data to a csv'''
-	soup = generate_html(base_url)
+	soup = generate_html(get_url())
 
 	outfile = open('cars.com_scraper.csv', 'w')
 	csv_writer = csv.writer(outfile, lineterminator = '\n')
@@ -108,8 +114,6 @@ def run_scraper():
 	    
 	outfile.close()
 
-
-run_scraper()
 
 
 
