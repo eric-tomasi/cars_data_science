@@ -16,7 +16,7 @@ def generate_html(url):
 
 	source = requests.get(url, headers=headers).text
 
-	return BeautifulSoup(source, 'lxml').prettify()
+	return BeautifulSoup(source, 'lxml')
 
 
 
@@ -108,6 +108,8 @@ def run_scraper():
 	    
 	outfile.close()
 
+
+run_scraper()
 
 
 
