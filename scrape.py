@@ -39,7 +39,7 @@ def run_scraper():
 
 	outfile = open('cars.com_scraper.csv', 'w')
 	csv_writer = csv.writer(outfile, lineterminator = '\n')
-	csv_writer.writerow(['name', 'price', 'mileage', 'ext_color', 'int_color', 'transmission', 'drivetrain', 'make', 'model', 
+	csv_writer.writerow(['listing_id', 'name', 'price', 'mileage', 'ext_color', 'int_color', 'transmission', 'drivetrain', 'make', 'model', 
 	                    'condition', 'year', 'trim', 'bodystyle', 'dealer', 'state', 'rating', 'review_count', 'CPO', 'price2', 'mileage2'
 	                    ])
 
@@ -91,6 +91,7 @@ def run_scraper():
 	    
 	        
 	    item = script['page']['vehicle'][iteration]
+	    print('listing_id: ', item['listingId'])
 	    print('make: ', item['make'])
 	    print('model: ', item['model'])
 	    print('condition: ', item['stockType'])
@@ -112,7 +113,7 @@ def run_scraper():
 	    iteration += 1
 	    
 	    csv_writer.writerow([name, price, mileage, ext_color, int_color, trans, drivetrain, 
-	                         item['make'], item['model'], item['stockType'], item['year'], item['trim'], item['bodyStyle'],
+	                         item['listingId'], item['make'], item['model'], item['stockType'], item['year'], item['trim'], item['bodyStyle'],
 	                         item['seller']['name'], item['seller']['state'], item['seller']['rating'], item['seller']['reviewCount'],
 	                         item['certified'], item['price'], item['mileage']
 	                        ])
@@ -120,3 +121,4 @@ def run_scraper():
 	    
 	outfile.close()
 
+run_scraper()
