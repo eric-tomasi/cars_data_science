@@ -6,6 +6,8 @@ import csv
 import numpy as np 
 import time
 
+
+
 def get_url():
 	'''prompts user for url input and returns url as string'''
 
@@ -28,7 +30,6 @@ def generate_html(url):
 	source = requests.get(url, headers=headers).text
 
 	return BeautifulSoup(source, 'lxml')
-
 
 
 
@@ -119,6 +120,3 @@ def run_scraper():
 	    
 	outfile.close()
 
-
-
-print(get_url())
