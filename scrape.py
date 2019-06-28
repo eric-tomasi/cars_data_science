@@ -47,16 +47,15 @@ def run_scraper():
 
 	urls = []
 	for page in range(2): #range(num_results['page']['search']['totalNumPages']-1):
-		page_num = url[url.find('page=')+5]
-		url = url.replace(page_num, str(page+1))
+		url = url[:url.find('page=')+5] + str(page+1) + url[url.find('page=')+6:]
 		urls.append(url)
 
 
 	outfile = open('cars.com_scraper.csv', 'w')
 	csv_writer = csv.writer(outfile, lineterminator = '\n')
-	'''csv_writer.writerow(['listing_id', 'name', 'price', 'mileage', 'ext_color', 'int_color', 'transmission', 'drivetrain', 'make', 'model', 
+	csv_writer.writerow(['listing_id', 'name', 'price', 'mileage', 'ext_color', 'int_color', 'transmission', 'drivetrain', 'make', 'model', 
 		                    'condition', 'year', 'trim', 'bodystyle', 'dealer', 'state', 'rating', 'review_count', 'CPO', 'price2', 'mileage2'
-		                    ])'''
+		                    ])
 
 	for url in urls:
 
@@ -136,6 +135,10 @@ def run_scraper():
 		                         item['seller']['name'], item['seller']['state'], item['seller']['rating'], item['seller']['reviewCount'],
 		                         item['certified'], item['price'], item['mileage']
 		                        ])
+
+		lag = [2, 4, 1, 8, 3, 12, 7, 5, 18]
+		lag = np.random.choice(lag)
+		time.sleep(lag)
 		    
 		    
 	outfile.close()
@@ -144,28 +147,21 @@ def run_scraper():
 
 def test():
 
-	'''url = get_url()
+	url = get_url()
 
-	print('\n')
-	print(url)
-	print(url.find('page='))
-	print('\n')
+	for page in range(2): #range(num_results['page']['search']['totalNumPages']-1):
+		page_num = url[url.find('page=')+5]
+		print(url[:url.find('page=')+5] + str(page+1) + url[url.find('page=')+6:])
 
 
-	page_num = url[url.find('page=')+5]
-	url = url.replace(page_num, '2')
-	print(url)'''
 
-	'''soup = generate_html(get_url())
+'''
+	urls = []
+	for page in range(2): #range(num_results['page']['search']['totalNumPages']-1):
+		page_num = url[url.find('page=')+5]
+		print(page_num)
+		print(url)
+		url = url.replace(page_num, str(page+1))
+		urls.append(url)'''
 
-	num_results = soup.find_all('script')[1].text 
-
-	num_results = num_results[61:-2]
-
-	data = json.loads(num_results)
-
-	print(data['page']['search']['numResultsReturned'])
-	print(data['page']['search']['totalNumPages'])'''
-
-	for i in range(2):
-		print(i+1)
+run_scraper()
