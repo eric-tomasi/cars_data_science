@@ -35,90 +35,137 @@ def generate_html(url):
 
 def run_scraper():
 	'''scrapes cars.com url and writes data to a csv'''
-	soup = generate_html(get_url())
+	url = get_url()
+
+	soup = generate_html(url)
+
+	num_results = soup.find_all('script')[1].text 
+
+	num_results = num_results[61:-2]
+
+	num_results = json.loads(num_results)
+
+	urls = []
+	for page in range(2): #range(num_results['page']['search']['totalNumPages']-1):
+		page_num = url[url.find('page=')+5]
+		url = url.replace(page_num, str(page+1))
+		urls.append(url)
+
 
 	outfile = open('cars.com_scraper.csv', 'w')
 	csv_writer = csv.writer(outfile, lineterminator = '\n')
-	csv_writer.writerow(['listing_id', 'name', 'price', 'mileage', 'ext_color', 'int_color', 'transmission', 'drivetrain', 'make', 'model', 
-	                    'condition', 'year', 'trim', 'bodystyle', 'dealer', 'state', 'rating', 'review_count', 'CPO', 'price2', 'mileage2'
-	                    ])
+	'''csv_writer.writerow(['listing_id', 'name', 'price', 'mileage', 'ext_color', 'int_color', 'transmission', 'drivetrain', 'make', 'model', 
+		                    'condition', 'year', 'trim', 'bodystyle', 'dealer', 'state', 'rating', 'review_count', 'CPO', 'price2', 'mileage2'
+		                    ])'''
 
-	script = soup.find_all('script')[1].text 
+	for url in urls:
 
-	script = script[61:-2]
+		soup = generate_html(url)
 
-	script = json.loads(script)
+		script = soup.find_all('script')[1].text 
 
-	iteration = 0
+		script = script[61:-2]
 
-	for listing in soup.find_all('div', class_='listing-row__details'):
-	    name = listing.h2.text
-	    name = name.strip()
-	    print(name)
-	    
-	    try:
-	        price = listing.find('div', class_='payment-section')
-	        price = price.find('span', class_='listing-row__price ').text
-	        price = price.strip()
-	    except:
-	        price = None
-	    print(price)
-	    
-	    try:
-	        mileage = listing.find('div', class_='payment-section')
-	        mileage = mileage.find('span', class_='listing-row__mileage').text
-	        mileage = mileage.strip()
-	    except:
-	        mileage = None
-	    print(mileage)
-	    
-	    
-	    attribute = listing.find('ul', class_='listing-row__meta')
-	    ext_color = attribute.find_all('li')[0].text
-	    ext_color = ' '.join(ext_color.split())
-	    int_color = attribute.find_all('li')[1].text
-	    int_color = ' '.join(int_color.split())
-	    trans = attribute.find_all('li')[2].text
-	    trans = ' '.join(trans.split())
-	    drivetrain = attribute.find_all('li')[3].text
-	    drivetrain = ' '.join(drivetrain.split())
-	    
-	    print(ext_color)
-	    print(int_color)
-	    print(trans)
-	    print(drivetrain)
-	    print('\n')
-	    
-	        
-	    item = script['page']['vehicle'][iteration]
-	    print('listing_id: ', item['listingId'])
-	    print('make: ', item['make'])
-	    print('model: ', item['model'])
-	    print('condition: ', item['stockType'])
-	    print('year: ', item['year'])
-	    print('trim: ', item['trim'])
-	    print('bodystyle: ', item['bodyStyle'])
-	    print('dealer: ', item['seller']['name'])
-	    print('state: ', item['seller']['state'])
-	    print('rating: ', item['seller']['rating'])
-	    print('review count: ', item['seller']['reviewCount'])
-	    print('CPO: ', item['certified'])
-	    print('price: ', item['price'])
-	    print('mileage: ', item['mileage'])
-	    print('\n')
-	        
-	    print('----------------------')
-	    print('\n')
-	    
-	    iteration += 1
-	    
-	    csv_writer.writerow([name, price, mileage, ext_color, int_color, trans, drivetrain, 
-	                         item['listingId'], item['make'], item['model'], item['stockType'], item['year'], item['trim'], item['bodyStyle'],
-	                         item['seller']['name'], item['seller']['state'], item['seller']['rating'], item['seller']['reviewCount'],
-	                         item['certified'], item['price'], item['mileage']
-	                        ])
-	    
-	    
+		script = json.loads(script)
+
+		iteration = 0
+
+		for listing in soup.find_all('div', class_='listing-row__details'):
+		    name = listing.h2.text
+		    name = name.strip()
+		    print(name)
+		    
+		    try:
+		        price = listing.find('div', class_='payment-section')
+		        price = price.find('span', class_='listing-row__price ').text
+		        price = price.strip()
+		    except:
+		        price = None
+		    print(price)
+		    
+		    try:
+		        mileage = listing.find('div', class_='payment-section')
+		        mileage = mileage.find('span', class_='listing-row__mileage').text
+		        mileage = mileage.strip()
+		    except:
+		        mileage = None
+		    print(mileage)
+		    
+		    
+		    attribute = listing.find('ul', class_='listing-row__meta')
+		    ext_color = attribute.find_all('li')[0].text
+		    ext_color = ' '.join(ext_color.split())
+		    int_color = attribute.find_all('li')[1].text
+		    int_color = ' '.join(int_color.split())
+		    trans = attribute.find_all('li')[2].text
+		    trans = ' '.join(trans.split())
+		    drivetrain = attribute.find_all('li')[3].text
+		    drivetrain = ' '.join(drivetrain.split())
+		    
+		    print(ext_color)
+		    print(int_color)
+		    print(trans)
+		    print(drivetrain)
+		    print('\n')
+		    
+		        
+		    item = script['page']['vehicle'][iteration]
+		    print('listing_id: ', item['listingId'])
+		    print('make: ', item['make'])
+		    print('model: ', item['model'])
+		    print('condition: ', item['stockType'])
+		    print('year: ', item['year'])
+		    print('trim: ', item['trim'])
+		    print('bodystyle: ', item['bodyStyle'])
+		    print('dealer: ', item['seller']['name'])
+		    print('state: ', item['seller']['state'])
+		    print('rating: ', item['seller']['rating'])
+		    print('review count: ', item['seller']['reviewCount'])
+		    print('CPO: ', item['certified'])
+		    print('price: ', item['price'])
+		    print('mileage: ', item['mileage'])
+		    print('\n')
+		        
+		    print('----------------------')
+		    print('\n')
+		    
+		    iteration += 1
+		    
+		    csv_writer.writerow([item['listingId'], name, price, mileage, ext_color, int_color, trans, drivetrain, 
+		                         item['make'], item['model'], item['stockType'], item['year'], item['trim'], item['bodyStyle'],
+		                         item['seller']['name'], item['seller']['state'], item['seller']['rating'], item['seller']['reviewCount'],
+		                         item['certified'], item['price'], item['mileage']
+		                        ])
+		    
+		    
 	outfile.close()
 
-run_scraper()
+
+
+def test():
+
+	'''url = get_url()
+
+	print('\n')
+	print(url)
+	print(url.find('page='))
+	print('\n')
+
+
+	page_num = url[url.find('page=')+5]
+	url = url.replace(page_num, '2')
+	print(url)'''
+
+	'''soup = generate_html(get_url())
+
+	num_results = soup.find_all('script')[1].text 
+
+	num_results = num_results[61:-2]
+
+	data = json.loads(num_results)
+
+	print(data['page']['search']['numResultsReturned'])
+	print(data['page']['search']['totalNumPages'])'''
+
+	for i in range(2):
+		print(i+1)
