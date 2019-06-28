@@ -143,25 +143,3 @@ def run_scraper():
 		    
 	outfile.close()
 
-
-
-def test():
-
-	url = get_url()
-
-	for page in range(2): #range(num_results['page']['search']['totalNumPages']-1):
-		page_num = url[url.find('page=')+5]
-		print(url[:url.find('page=')+5] + str(page+1) + url[url.find('page=')+6:])
-
-
-
-'''
-	urls = []
-	for page in range(2): #range(num_results['page']['search']['totalNumPages']-1):
-		page_num = url[url.find('page=')+5]
-		print(page_num)
-		print(url)
-		url = url.replace(page_num, str(page+1))
-		urls.append(url)'''
-
-run_scraper()
