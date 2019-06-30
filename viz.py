@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 def clean_data():
-	'''cleans scraped csv file by manipulating columns to be used for visualization'''
+	'''returns a cleaned csv file by manipulating columns in original scraped csv to be used for visualization'''
 
 	df = pd.read_csv('bmw_3series.csv')
 
@@ -29,9 +29,13 @@ def clean_data():
 	df['mileage'] = np.where(df['mileage'].isnull(), df['mileage2'], df['mileage'])
 
 
-	df['match'] = np.where(df['mileage'] == df['mileage2'], 1,0)
+	#clean ext_color, int_color, transmission, and drivetrain columns to strip out labels
+	df['ext_color'] = df['ext_color'].str.replace('Ext. Color: ', '')
+	df['int_color'] = df['int_color'].str.replace('Int. Color: ', '')
+	df['transmission'] = df['transmission'].str.replace('Transmission: ', '')
+	df['drivetrain'] = df['drivetrain'].str.replace('Drivetrain: ', '')
 
-	print(df[['mileage', 'mileage2', 'match']])
+	#remove columns that are no longer needed
+	df.drop(['price2', 'mileage2'], 1, inplace=True)
 
-
-clean_data()
+	return df
