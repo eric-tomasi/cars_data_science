@@ -21,10 +21,17 @@ def clean_data():
 
 
 	#clean mileage column. Utilize mileage column (shown to end user) unless null, then show mileage2
+	df['mileage'] = df['mileage'].replace({'mi.': '', ',': '', ' ': '', '--': ''}, regex=True)
+	df['mileage'] = df['mileage'].replace({'': None})
+	
+	df['mileage'] = df['mileage'].astype(float)
 
-	df['match'] = np.where(df['price'] == df['price2'], 1,0)
+	df['mileage'] = np.where(df['mileage'].isnull(), df['mileage2'], df['mileage'])
 
-	print(df[['price', 'price2', 'match']])
+
+	df['match'] = np.where(df['mileage'] == df['mileage2'], 1,0)
+
+	print(df[['mileage', 'mileage2', 'match']])
 
 
 clean_data()
