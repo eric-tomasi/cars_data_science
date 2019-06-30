@@ -142,28 +142,3 @@ def run_scraper():
 		    
 		    
 	outfile.close()
-
-def test():
-
-	url = get_url()
-
-	soup = generate_html(url)
-
-	num_results = soup.find_all('script')[1].text 
-
-	num_results = num_results[61:-2]
-
-	num_results = json.loads(num_results)
-
-	urls = []	
-	for page in range(num_results['page']['search']['totalNumPages']):
-		new_url = url[:url.find('page=')+5] + str(page+1) + url[url.find('page=')+6:]
-		urls.append(new_url)
-
-
-	for url in urls:
-		print(url)
-		print('\n')
-
-
-run_scraper()
