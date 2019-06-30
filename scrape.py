@@ -45,10 +45,10 @@ def run_scraper():
 
 	num_results = json.loads(num_results)
 
-	urls = []
-	for page in range(2): #range(num_results['page']['search']['totalNumPages']-1):
-		url = url[:url.find('page=')+5] + str(page+1) + url[url.find('page=')+6:]
-		urls.append(url)
+	urls = []	
+	for page in range(num_results['page']['search']['totalNumPages']):
+		new_url = url[:url.find('page=')+5] + str(page+1) + url[url.find('page=')+6:]
+		urls.append(new_url)
 
 
 	outfile = open('cars.com_scraper.csv', 'w')
@@ -136,11 +136,34 @@ def run_scraper():
 		                         item['certified'], item['price'], item['mileage']
 		                        ])
 
-		lag = [2, 4, 1, 8, 3, 12, 7, 5, 18]
+		lag = [10, 20, 35, 50, 30, 12, 45, 38, 60]
 		lag = np.random.choice(lag)
 		time.sleep(lag)
 		    
 		    
 	outfile.close()
+
+def test():
+
+	url = get_url()
+
+	soup = generate_html(url)
+
+	num_results = soup.find_all('script')[1].text 
+
+	num_results = num_results[61:-2]
+
+	num_results = json.loads(num_results)
+
+	urls = []	
+	for page in range(num_results['page']['search']['totalNumPages']):
+		new_url = url[:url.find('page=')+5] + str(page+1) + url[url.find('page=')+6:]
+		urls.append(new_url)
+
+
+	for url in urls:
+		print(url)
+		print('\n')
+
 
 run_scraper()
