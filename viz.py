@@ -9,6 +9,7 @@ def clean_data():
 	'''returns a cleaned csv file by manipulating columns in original scraped csv to be used for visualization'''
 
 	df = pd.read_csv('bmw_3series.csv')
+	df = df[df['model'].isin(['335', '340'])]
 
 
 	#clean price column. Utilize price column (shown to end user) unless null, then show price2
@@ -49,12 +50,13 @@ def plot_trend(df):
     plt.rcParams.update({'font.size':14})
     sns.set()
 
-    #plot smoothed actuals and regression with upper and lower bounds
+    #plot scatter of price by mileage
     ax1.scatter(df['mileage'], df['price'], color='xkcd:cobalt', label='Price', linewidth=1.0)
     ax1.set_xlabel('Mileage')
     ax1.set_ylabel('Price')
+    ax1.set_xticks(np.arange(0, df['mileage'].max(), 12000))
 
-    #set title, legened, and savefig
+    #set title, legend, and savefig
     plt.title('Price by mileage')
     plt.legend(loc='upper right')
     fig.savefig('trend.png', dpi=fig.dpi)
