@@ -8,9 +8,7 @@ import seaborn as sns
 def clean_data():
 	'''returns a cleaned csv file by manipulating columns in original scraped csv to be used for visualization'''
 
-	df = pd.read_csv('bmw_3series.csv')
-	df = df[df['model'].isin(['335', '340'])]
-
+	df = pd.read_csv('cars.com_scraper.csv')
 
 	#clean price column. Utilize price column (shown to end user) unless null, then show price2
 	df['price'] = df['price'].replace({'\$': '', ',': '', 'MSRP': ''}, regex=True)

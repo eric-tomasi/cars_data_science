@@ -142,3 +142,5 @@ def run_scraper():
 		    
 		    
 	outfile.close()
+
+run_scraper()
