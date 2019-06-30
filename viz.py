@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 
@@ -49,13 +50,13 @@ def plot_trend(df):
     sns.set()
 
     #plot smoothed actuals and regression with upper and lower bounds
-    ax1.plot(df['mileage'], df['price'], color='xkcd:cobalt', label='Price', linewidth=3.5)
+    ax1.scatter(df['mileage'], df['price'], color='xkcd:cobalt', label='Price', linewidth=1.0)
     ax1.set_xlabel('Mileage')
     ax1.set_ylabel('Price')
 
     #set title, legened, and savefig
     plt.title('Price by mileage')
-    plt.legend(loc='lower center')
+    plt.legend(loc='upper right')
     fig.savefig('trend.png', dpi=fig.dpi)
 
 
