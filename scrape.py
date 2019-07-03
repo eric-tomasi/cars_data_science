@@ -13,6 +13,7 @@ def get_url():
 
 	url = input('provide valid cars.com url: ')
 
+	#continually prompt users if url does not contain cars.com. 
 	while 'cars.com' not in url:
 		print('must be a cars.com search result url')
 
@@ -39,12 +40,15 @@ def run_scraper():
 
 	soup = generate_html(url)
 
+	#gets the number of results displayed by query to known how many pages to loop through
 	num_results = soup.find_all('script')[1].text 
 
 	num_results = num_results[61:-2]
 
 	num_results = json.loads(num_results)
 
+
+	#gets list of urls by page so each one can be looped through
 	urls = []	
 	for page in range(num_results['page']['search']['totalNumPages']):
 		new_url = url[:url.find('page=')+5] + str(page+1) + url[url.find('page=')+6:]
@@ -57,6 +61,7 @@ def run_scraper():
 		                    'condition', 'year', 'trim', 'bodystyle', 'dealer', 'state', 'rating', 'review_count', 'CPO', 'price2', 'mileage2'
 		                    ])
 
+	#loop through each url and write scraped results to a csv
 	for url in urls:
 
 		soup = generate_html(url)
@@ -69,10 +74,10 @@ def run_scraper():
 
 		iteration = 0
 
+		#name, price and mileage are all in main listing, but not always available so they are added to try/except blocks
 		for listing in soup.find_all('div', class_='listing-row__details'):
 		    name = listing.h2.text
 		    name = name.strip()
-		    print(name)
 		    
 		    try:
 		        price = listing.find('div', class_='payment-section')
@@ -80,7 +85,6 @@ def run_scraper():
 		        price = price.strip()
 		    except:
 		        price = None
-		    print(price)
 		    
 		    try:
 		        mileage = listing.find('div', class_='payment-section')
@@ -88,7 +92,6 @@ def run_scraper():
 		        mileage = mileage.strip()
 		    except:
 		        mileage = None
-		    print(mileage)
 		    
 		    
 		    attribute = listing.find('ul', class_='listing-row__meta')
@@ -100,33 +103,10 @@ def run_scraper():
 		    trans = ' '.join(trans.split())
 		    drivetrain = attribute.find_all('li')[3].text
 		    drivetrain = ' '.join(drivetrain.split())
+
 		    
-		    print(ext_color)
-		    print(int_color)
-		    print(trans)
-		    print(drivetrain)
-		    print('\n')
-		    
-		        
+		    # using the script section of the html contains additional dealer and vehicle info    
 		    item = script['page']['vehicle'][iteration]
-		    print('listing_id: ', item['listingId'])
-		    print('make: ', item['make'])
-		    print('model: ', item['model'])
-		    print('condition: ', item['stockType'])
-		    print('year: ', item['year'])
-		    print('trim: ', item['trim'])
-		    print('bodystyle: ', item['bodyStyle'])
-		    print('dealer: ', item['seller']['name'])
-		    print('state: ', item['seller']['state'])
-		    print('rating: ', item['seller']['rating'])
-		    print('review count: ', item['seller']['reviewCount'])
-		    print('CPO: ', item['certified'])
-		    print('price: ', item['price'])
-		    print('mileage: ', item['mileage'])
-		    print('\n')
-		        
-		    print('----------------------')
-		    print('\n')
 		    
 		    iteration += 1
 		    
@@ -136,11 +116,11 @@ def run_scraper():
 		                         item['certified'], item['price'], item['mileage']
 		                        ])
 
+
+		#random time lag between loops ensures server is not overloaded with multiple requests per second
 		lag = [10, 20, 35, 50, 30, 12, 45, 38, 60]
 		lag = np.random.choice(lag)
 		time.sleep(lag)
 		    
 		    
 	outfile.close()
-
-run_scraper()
