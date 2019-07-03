@@ -8,3 +8,6 @@ def main():
 	run_scraper()
 
 	plot_trend(clean_data())
+
+
+main()
