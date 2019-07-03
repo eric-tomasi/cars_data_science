@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+from scipy.optimize import curve_fit
 
 
 def clean_data():
@@ -37,8 +37,38 @@ def clean_data():
 
 	#remove columns that are no longer needed
 	df.drop(['price2', 'mileage2'], 1, inplace=True)
+	df.dropna(subset=['price', 'mileage'], inplace=True)
 
 	return df
+
+
+def fit_curve():
+	'''Fits an exponential decay curve to the dataset. returns dataframe with the curve points for plotting'''
+
+	df = clean_data()
+
+	# get x and y
+	x_data = df['mileage'].values.sort()
+	y_data = df['price'].values
+
+	#define exponential decay func
+	def exponential_decay(x,a,r):
+		return a*((1-r)**x)
+
+	#find optimal paramaters and covariance
+	popt, pcov = curve_fit(exponential_decay, df['mileage'], df['price'])
+
+	ans = popt[0]*((1-popt[1])**df['mileage'])
+
+	print(popt)
+
+	plt.plot(df['mileage'], ans)
+
+	#plt.plot(x_data, ans)
+	plt.show()
+
+	#return df
+
 
 
 def plot_trend(df):
@@ -60,4 +90,4 @@ def plot_trend(df):
     fig.savefig('trend.png', dpi=fig.dpi)
 
 
-plot_trend(clean_data())
+fit_curve()
