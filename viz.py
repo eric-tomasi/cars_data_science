@@ -39,11 +39,13 @@ def clean_data():
 	df.drop(['price2', 'mileage2'], 1, inplace=True)
 	df.dropna(subset=['price', 'mileage'], inplace=True)
 
+	df.to_csv('cleaned_data.csv')
+
 	return df
 
 
 def fit_curve():
-	'''Fits an exponential decay curve to the dataset. returns dataframe with the curve points for plotting'''
+	'''Fits an exponential decay curve to the dataset. returns fitted x and y values for plotting'''
 	df = clean_data()
 
 	# get x and y
