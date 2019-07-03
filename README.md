@@ -60,5 +60,5 @@ The decision was made to leave in the fitted curve as it can represent a general
 
 The data and trend added to this repo is for a BMW 335/340i for reference
 
-### Ackowledgements 
+### Acknowledgements 
 All work was completed by Eric Tomasi. etomasi2323@gmail.com
