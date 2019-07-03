@@ -10,14 +10,14 @@ Follow these steps to run the car scraper yourself and compare the depreciation 
 
 To run the scraper, a few common packages from the scientific community are leveraged which can be installed using pip shown below:
 
-'''
+```
 pip install numpy
 pip install pandas
 pip install matplotlib
 pip install seaboarn
 pip install scipy
 pip install beautifulsoup4
-'''
+```
 
 All other packages are already in the standard library. 
 
@@ -35,10 +35,10 @@ Scraping the web page can take several minutes, which is done intentionally, so 
 
 There are two main outputs:
 
-'''
+```
 cleaned_data.csv
 trend.png
-'''
+```
 
 The cleaned_data.csv file is a log of all of the search results returned by your query on cars.com. So, if you are looking for BMW 3-series results, and filtered for the 335/340i trims, all of those results will be parsed and cleaned in this csv file. Data cleaning involved using multiple paramters in the html to determine price and mileage, as well as formatting datatypes and stripping unecedssary text that would inhibit a user's ability to performa analytics. 
 
