@@ -31,6 +31,11 @@ For best results, you should also filter for cars of a similar trim level as wel
 
 Scraping the web page can take several minutes, which is done intentionally, so that the cars.com server is not hit with multiple requests all at once. 
 
+```
+python main.py
+provide valid cars.com url: https://www.cars.com/for-sale/searchresults.action/?dealerType=all&mdId=20884&mkId=20053&page=1&perPage=100&rd=500&searchSource=PAGINATION&sort=price-lowest&trId=32543&trId=23139&trId=29632&trId=23939&trId=57947&trId=57948&trId=53076&yrId=20199&yrId=20144&yrId=20200&yrId=20145&yrId=20201&yrId=27381&yrId=34923&yrId=39723&yrId=47272&yrId=51683&yrId=56007&yrId=58487&yrId=30031936&yrId=35797618&yrId=36362520&zc=02038
+```
+
 ### Outputs
 
 There are two main outputs:
